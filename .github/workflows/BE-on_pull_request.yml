@@ -2,6 +2,7 @@
 name: CI-workflow
 
 # Action의 Trigger 설정
+# test
 on:
   pull_request:
     #master브랜치에 pr 오는 때에 실행될 것
