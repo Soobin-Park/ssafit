@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.fit.model.dao.VideoReviewDao">
+	<!-- 영상 아이디에 해당하는 리뷰 목록 -->
+	<select id="selectVR" resultType="VideoReview" parameterType="String">
+		SELECT video_id, review_id, writer, content, rating,
+		date_format(createdAt, '%Y-%m-%d %H:%i') as createdAt
+		FROM video_review
+		WHERE video_id = #{video_id};
+	</select>
+	
+	<!-- 리뷰 조회 -->
+	<select id="selectOne" resultType="VideoReview" parameterType="int">
+		SELECT * FROM video_review WHERE review_id = #{review_id}
+	</select>
+	
+	<!-- 리뷰 등록 -->
+	<insert id="insertVR" parameterType="VideoReview">
+		INSERT INTO video_review (video_id, writer, content, rating)
+		VALUES (#{video_id}, #{writer}, #{content}, #{rating})
+	</insert>
+	
+	<!-- 리뷰 수정 -->
+	<update id="updateVR" parameterType="VideoReview">
+		UPDATE video_review
+		SET content=#{content}, rating=#{rating}, video_id=#{video_id}
+		WHERE review_id=#{review_id}
+	</update>
+	
+	<!-- 리뷰 삭제 -->
+	<delete id="deleteVR" parameterType="int">
+		DELETE FROM video_review
+		WHERE review_id=#{review_id}
+	</delete>
+	
+	<!-- 별점 평균 -->
+	<select id="getVideoRatingAvg" resultType="double">
+		SELECT AVG(rating)
+		FROM video_review
+		WHERE video_id=#{video_id}
+	</select>
+	
+	<!-- 별점 평균 반영하기 -->
+	<update id="updateRating">
+		UPDATE video
+		SET rating_avg = #{rating_avg}
+		WHERE id = #{id}
+	</update>
+</mapper>

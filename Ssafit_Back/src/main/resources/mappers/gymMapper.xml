@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.fit.model.dao.GymDao">
+	<!-- 모든 헬스장 목록 -->
+	<select id="selectAll" resultType="Gym">
+		SELECT * FROM gym
+	</select>
+	
+	<!-- 헬스장 아이디에 해당하는 헬스장 조회 -->
+	<select id="selectOne" resultType="Gym" parameterType="int">
+		SELECT *
+		FROM gym
+		WHERE id = #{id}
+	</select>
+	
+	<!-- 리뷰 개수 증감 -->
+	<update id="updateGymReviewCnt">
+		UPDATE gym
+		SET reviewCnt = reviewCnt + #{amount}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 리뷰 많은 순으로 3개의 헬스장 조회 -->
+	<select id="selectReviewCnt" resultType="Gym">
+		SELECT *
+		FROM gym
+		ORDER BY reviewCnt DESC
+		LIMIT 3;
+	</select>
+	
+	<!-- 별점 높은 순으로 3개의 헬스장 조회 -->
+	<select id="selectReviewRating" resultType="Gym">
+		SELECT *
+		FROM gym
+		ORDER BY rating_avg DESC
+		LIMIT 3;
+	</select>
+	
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.fit.model.dao.VideoMarkDao">
+	<!-- 찜하기 -->
+	<insert id="insertMark" parameterType="VideoMark">
+		INSERT INTO video_mark (user_id, video_id)
+		VALUES (#{user_id}, #{video_id})
+	</insert>
+	
+	<!-- 찜 조회 -->
+	<select id="selectVideoMark" resultType="VideoMark" parameterType="int">
+		SELECT * FROM video_mark
+		WHERE id = #{id}
+	</select>
+	
+	<!-- 찜 취소 -->
+	<delete id="deleteMark" parameterType="int">
+		DELETE FROM video_mark
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 찜 여부 -->
+	<select id="getVideoMarkCheck" resultType="int">
+		SELECT COUNT(id) FROM video_mark
+		WHERE user_id = #{user_id} and video_id = #{video_id}
+	</select>
+	
+	<!-- 유저가 찜한 영상 목록 -->
+	<select id="VideoMarkList" resultType="Video">
+		SELECT v.id, v.title, v.category, v.viewCnt, v.rating_avg, v.part
+		FROM video v
+		INNER JOIN video_mark vm ON v.id = vm.video_id
+		WHERE vm.user_id = #{user_id}
+	</select>
+</mapper>
